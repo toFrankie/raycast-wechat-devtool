@@ -1,5 +1,7 @@
 # WeChat DevTool
 
+<a title="Install wechat-devtool Raycast Extension" href="https://www.raycast.com/tofrankie/wechat-devtool"><img src="https://www.raycast.com/tofrankie/wechat-devtool/install_button@2x.png?v=1.1" height="64" alt="" style="height: 64px;"></a>
+
 Quickly open WeChat Mini Program projects with plans to support additional features like Mini Program preview in the future.
 
 ## ✨ Features
