@@ -4,7 +4,7 @@
 
 ### Features
 
-- **Quick Opening**: Open Mini Program projects using the WeChat DevTool CLI
-- **Graphical Configuration**: Add and manage devices and projects
+- **Quick Opening**: Open Mini Program projects via WeChat DevTool CLI
+- **Graphical Configuration**: Add and manage projects with a visual interface
 - **Multi-Device Support**: Independent project configurations per device
 - **Project Sorting**: Sort by most recently used
