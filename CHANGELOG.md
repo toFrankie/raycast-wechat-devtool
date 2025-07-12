@@ -1,6 +1,17 @@
 # WeChat DevTool Changelog
 
-## [First Release] - {PR_MERGE_DATE}
+## [v1.1.0] - {PR_MERGE_DATE}
+
+### Features
+
+1. Added pinyin search functionality for Chinese project names.
+2. Configuration has been simplified and settings will be saved locally.
+
+### Breaking Changes
+
+1. Due to configuration structure changes, this version is incompatible with previous versions. After updating to this version, you will need to reconfigure your settings. We apologize for any inconvenience this may cause.
+
+## [First Release] - 2025-07-11
 
 ### Features
 

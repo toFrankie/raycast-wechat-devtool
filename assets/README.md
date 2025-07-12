@@ -37,4 +37,4 @@ Since the official CLI tool is located inside the application bundle, Raycast's 
 
 ## 💬 Support
 
-For questions, contact the [author](https://github.com/toFrankie) on GitHub.
+For questions, contact the [author](https://github.com/toFrankie/raycast-wechat-devtool) on GitHub.

@@ -4,6 +4,7 @@ import { showFailureToast } from "@raycast/utils";
 import { List, ActionPanel, Action, Icon, useNavigation, showToast, Toast } from "@raycast/api";
 
 import { getExtensionConfig, updateProjectLastUsed } from "../utils/config";
+import { generateProjectKeywords } from "../utils/pinyin";
 import { Project, ExtensionConfig } from "../types";
 import Configure from "../configure";
 import ReadmeView from "../readme-view";
@@ -13,7 +14,6 @@ interface ProjectListProps {
   requiredFields?: string[];
   actionPanelExtra?: React.ReactNode;
   actionTitle: string;
-  onConfigChange?: () => void;
 }
 
 export default function ProjectList({
@@ -21,13 +21,11 @@ export default function ProjectList({
   requiredFields = ["name", "path"],
   actionPanelExtra,
   actionTitle,
-  onConfigChange,
 }: ProjectListProps) {
   const { push } = useNavigation();
   const [projects, setProjects] = useState<Project[]>([]);
   const [config, setConfig] = useState<ExtensionConfig | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchText, setSearchText] = useState("");
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   function formatPath(projectPath: string): string {
@@ -45,9 +43,9 @@ export default function ProjectList({
   async function loadProjects() {
     try {
       setIsLoading(true);
-      const currentConfig = await getExtensionConfig();
-      setConfig(currentConfig);
-      setProjects(currentConfig.projects || []);
+      const config = await getExtensionConfig();
+      setConfig(config);
+      setProjects(config.projects);
     } catch (error) {
       console.error("Failed to load projects:", error);
       await showFailureToast(error, { title: "Failed to Load", message: "Could not load project configuration" });
@@ -72,16 +70,9 @@ export default function ProjectList({
   function handleConfigChange() {
     // Trigger a refresh by updating the refreshTrigger
     setRefreshTrigger((prev) => prev + 1);
-    onConfigChange?.();
   }
 
-  const filteredProjects = projects.filter(
-    (project) =>
-      project.name.toLowerCase().includes(searchText.toLowerCase()) ||
-      project.path.toLowerCase().includes(searchText.toLowerCase()),
-  );
-
-  if (projects.length === 0) {
+  if (!isLoading && projects.length === 0) {
     return (
       <List searchBarPlaceholder="Search projects...">
         <List.EmptyView
@@ -149,21 +140,23 @@ export default function ProjectList({
     );
   }
 
-  const sortedProjects = filteredProjects
+  const sortedProjects = projects
     .slice()
     .sort((a, b) => b.lastUsedAt - a.lastUsedAt)
     .map((project) => ({
       ...project,
       displayPath: formatPath(project.path),
+      keywords: generateProjectKeywords(project),
     }));
 
   return (
-    <List isLoading={isLoading} searchBarPlaceholder="Search projects..." onSearchTextChange={setSearchText}>
+    <List isLoading={isLoading} searchBarPlaceholder="Search projects...">
       {sortedProjects.map((project) => (
         <List.Item
           key={project.id}
           icon={Icon.Folder}
           title={project.name}
+          keywords={project.keywords}
           subtitle={project.displayPath}
           accessories={[{ text: new Date(project.lastUsedAt).toLocaleDateString() }]}
           actions={

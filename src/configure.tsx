@@ -17,53 +17,11 @@ interface FormErrors {
   }>;
 }
 
-async function isValidWechatMiniprogramDir(dirPath: string) {
-  const projectConfigPath = path.resolve(dirPath, "project.config.json");
-
-  try {
-    await access(projectConfigPath);
-    return true;
-  } catch {
-    return false;
-  }
+interface ConfigureProps {
+  onConfigChange?: () => void;
 }
 
-async function getProjectName(projectPath: string) {
-  const configPath = path.resolve(projectPath, "project.config.json");
-  const privateConfigPath = path.resolve(projectPath, "project.private.config.json");
-
-  try {
-    const privateConfigContent = await readFile(privateConfigPath, "utf8");
-    const privateConfig: WechatProjectConfig = JSON.parse(privateConfigContent);
-    if (privateConfig.projectname) {
-      return decodeURIComponent(privateConfig.projectname);
-    }
-  } catch {
-    // Private config doesn't exist or is invalid, try public config
-  }
-
-  try {
-    const configContent = await readFile(configPath, "utf8");
-    const config: WechatProjectConfig = JSON.parse(configContent);
-    if (config.projectname) {
-      return decodeURIComponent(config.projectname);
-    }
-  } catch {
-    // Config doesn't exist or is invalid
-  }
-
-  return null;
-}
-
-function validateProjectPath(selectedPath: string): boolean {
-  return selectedPath.trim().length > 0;
-}
-
-async function validateWechatProject(selectedPath: string): Promise<boolean> {
-  return await isValidWechatMiniprogramDir(selectedPath);
-}
-
-export default function Configure({ onConfigChange }: { onConfigChange?: () => void }) {
+export default function Configure({ onConfigChange }: ConfigureProps) {
   const { pop, push } = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [cliPath, setCliPath] = useState(WECHAT_DEVTOOL_CLI_PATH);
@@ -231,9 +189,8 @@ export default function Configure({ onConfigChange }: { onConfigChange?: () => v
         style: Toast.Style.Success,
         title: "Configuration Saved",
       });
-      // Auto return to previous page after saving
-      pop();
       onConfigChange?.();
+      pop();
     } catch (error) {
       await showFailureToast(error, { title: "Failed to Save" });
     } finally {
@@ -363,4 +320,50 @@ export default function Configure({ onConfigChange }: { onConfigChange?: () => v
       })}
     </Form>
   );
+}
+
+async function isValidWechatMiniprogramDir(dirPath: string) {
+  const projectConfigPath = path.resolve(dirPath, "project.config.json");
+
+  try {
+    await access(projectConfigPath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function getProjectName(projectPath: string) {
+  const configPath = path.resolve(projectPath, "project.config.json");
+  const privateConfigPath = path.resolve(projectPath, "project.private.config.json");
+
+  try {
+    const privateConfigContent = await readFile(privateConfigPath, "utf8");
+    const privateConfig: WechatProjectConfig = JSON.parse(privateConfigContent);
+    if (privateConfig.projectname) {
+      return decodeURIComponent(privateConfig.projectname);
+    }
+  } catch {
+    // Private config doesn't exist or is invalid, try public config
+  }
+
+  try {
+    const configContent = await readFile(configPath, "utf8");
+    const config: WechatProjectConfig = JSON.parse(configContent);
+    if (config.projectname) {
+      return decodeURIComponent(config.projectname);
+    }
+  } catch {
+    // Config doesn't exist or is invalid
+  }
+
+  return null;
+}
+
+function validateProjectPath(selectedPath: string): boolean {
+  return selectedPath.trim().length > 0;
+}
+
+async function validateWechatProject(selectedPath: string): Promise<boolean> {
+  return await isValidWechatMiniprogramDir(selectedPath);
 }

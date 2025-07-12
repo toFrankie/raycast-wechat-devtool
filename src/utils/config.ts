@@ -59,6 +59,7 @@ export function createEmptyProject(): Project {
     name: "",
     path: "",
     lastUsedAt: Date.now(),
+    aliases: [],
   };
 }
 
@@ -69,4 +70,18 @@ export async function updateProjectLastUsed(projectId: string) {
     project.lastUsedAt = Date.now();
     await updateExtensionConfig(config);
   }
+}
+
+export function parseProjectAliasesString(aliasesString: string) {
+  if (!aliasesString || !aliasesString.trim()) {
+    return [];
+  }
+  return aliasesString
+    .split(",")
+    .map((alias) => alias.trim())
+    .filter((alias) => alias.length > 0);
+}
+
+export function formatProjectAliasesString(aliasesArray: string[]) {
+  return aliasesArray.join(", ");
 }
