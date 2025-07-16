@@ -21,7 +21,7 @@ Search for **WeChat DevTool** in the [Raycast Store](https://www.raycast.com/tof
    - Project Name: Display name.
    - Project Path: Complete path to the Mini Program project.
 
-### CLI Path Selection Tip
+### 🛠 CLI Path Selection Tips
 
 Since the official CLI tool is located inside the application bundle, Raycast's file picker may not be able to access files within the package. To resolve this:
 
@@ -39,4 +39,4 @@ Since the official CLI tool is located inside the application bundle, Raycast's 
 
 ## 💬 Support
 
-For questions, contact the [author](https://github.com/toFrankie/raycast-wechat-devtool) on GitHub.
+For questions, contact [author](https://github.com/toFrankie/raycast-wechat-devtool) on GitHub.

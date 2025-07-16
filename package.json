@@ -40,14 +40,12 @@
     {
       "name": "open-project",
       "title": "Open Project",
-      "subtitle": "WeChat DevTool",
       "description": "Open Mini Program projects via WeChat DevTool.",
       "mode": "view"
     },
     {
-      "name": "configure",
+      "name": "configure-projects",
       "title": "Configure Projects",
-      "subtitle": "WeChat DevTool",
       "description": "Configure Mini Program projects.",
       "mode": "view"
     }

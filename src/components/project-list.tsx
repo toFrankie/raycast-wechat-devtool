@@ -6,7 +6,7 @@ import { List, ActionPanel, Action, Icon, useNavigation, showToast, Toast } from
 import { getExtensionConfig, updateProjectLastUsed } from "../utils/config";
 import { generateProjectKeywords } from "../utils/pinyin";
 import { Project, ExtensionConfig } from "../types";
-import Configure from "../configure";
+import ConfigureProjects from "../configure-projects";
 import ReadmeView from "../readme-view";
 
 interface ProjectListProps {
@@ -84,7 +84,7 @@ export default function ProjectList({
               <Action
                 title="Go to Configuration"
                 icon={Icon.Gear}
-                onAction={() => push(<Configure onConfigChange={handleConfigChange} />)}
+                onAction={() => push(<ConfigureProjects onConfigChange={handleConfigChange} />)}
                 shortcut={{ modifiers: ["cmd"], key: "return" }}
               />
               <Action
@@ -122,7 +122,7 @@ export default function ProjectList({
               <Action
                 title="Go to Configuration"
                 icon={Icon.Gear}
-                onAction={() => push(<Configure onConfigChange={handleConfigChange} />)}
+                onAction={() => push(<ConfigureProjects onConfigChange={handleConfigChange} />)}
                 shortcut={{ modifiers: ["cmd"], key: "return" }}
               />
               <Action
@@ -175,7 +175,7 @@ export default function ProjectList({
               <Action
                 title="Go to Configuration"
                 icon={Icon.Gear}
-                onAction={() => push(<Configure onConfigChange={handleConfigChange} />)}
+                onAction={() => push(<ConfigureProjects onConfigChange={handleConfigChange} />)}
                 shortcut={{ modifiers: ["cmd"], key: "return" }}
               />
               <Action.CopyToClipboard
