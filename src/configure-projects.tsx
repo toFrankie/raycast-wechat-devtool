@@ -239,7 +239,7 @@ export default function Configure({ onConfigChange }: ConfigureProps) {
       navigationTitle="Configure Projects"
       actions={
         <ActionPanel>
-          <Action title="Save" icon={Icon.Check} onAction={handleSubmit} shortcut={{ modifiers: ["cmd"], key: "s" }} />
+          <Action title="Save" icon={Icon.Check} onAction={handleSubmit} />
           <Action title="Cancel" icon={Icon.Xmark} onAction={pop} />
           <Action
             title="Add Project"

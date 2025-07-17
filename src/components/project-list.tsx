@@ -85,7 +85,6 @@ export default function ProjectList({
                 title="Go to Configuration"
                 icon={Icon.Gear}
                 onAction={() => push(<ConfigureProjects onConfigChange={handleConfigChange} />)}
-                shortcut={{ modifiers: ["cmd"], key: "return" }}
               />
               <Action
                 title="Refresh Project List"
