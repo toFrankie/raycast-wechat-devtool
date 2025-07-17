@@ -28,7 +28,7 @@ export default function ProjectList({
   const [isLoading, setIsLoading] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-  function formatPath(projectPath: string): string {
+  function formatPath(projectPath: string) {
     const homeDir = homedir();
     if (projectPath.startsWith(homeDir)) {
       return projectPath.replace(homeDir, "~");

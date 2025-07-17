@@ -360,10 +360,10 @@ async function getProjectName(projectPath: string) {
   return null;
 }
 
-function validateProjectPath(selectedPath: string): boolean {
+function validateProjectPath(selectedPath: string) {
   return selectedPath.trim().length > 0;
 }
 
-async function validateWechatProject(selectedPath: string): Promise<boolean> {
+async function validateWechatProject(selectedPath: string) {
   return await isValidWechatMiniprogramDir(selectedPath);
 }
