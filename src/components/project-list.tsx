@@ -177,7 +177,7 @@ export default function ProjectList({
         return (
           <List.Item
             key={project.id}
-            icon={Icon.Folder}
+            icon={{ fileIcon: project.path }}
             title={project.name}
             keywords={project.keywords}
             subtitle={project.displayPath}
