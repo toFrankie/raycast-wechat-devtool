@@ -1,7 +1,9 @@
+import path from "path";
+import { mkdir } from "fs/promises";
 import { exec } from "child_process";
 import { promisify } from "util";
 
-import { REPOSITORY_TYPE, COMMAND } from "../constants";
+import { REPOSITORY_TYPE, COMMAND, PREVIEW_QRCODE_DIR } from "../constants";
 import { RepositoryType } from "../types";
 
 const execAsync = promisify(exec);
@@ -31,6 +33,35 @@ export async function openProject(cliPath: string, projectPath: string) {
 
   if (stderr && ideStarted && stderr.includes("✔ open")) {
     return true;
+  }
+
+  if (stderr && ideStarted && stderr.includes("✖ preparing")) {
+    throw new Error(stderr);
+  }
+
+  throw new Error(stderr || stdout);
+}
+
+export async function previewProject(cliPath: string, projectPath: string, projectId: string) {
+  await mkdir(PREVIEW_QRCODE_DIR, { recursive: true });
+
+  const qrcodePath = path.resolve(PREVIEW_QRCODE_DIR, `${projectId}.png`);
+
+  const command = `${cliPath} preview --project ${projectPath} --qr-size small --qr-format image --qr-output ${qrcodePath}`;
+  const { stderr, stdout } = await execAsync(command);
+
+  console.log("🚀 ~ previewProject ~ stdout:", stdout);
+  console.log("🚀 ~ previewProject ~ stderr:", stderr);
+
+  const ideStarted =
+    stderr && (stderr.includes("IDE server has started") || stderr.includes("IDE server started successfully"));
+
+  if (stderr && !ideStarted) {
+    throw new Error(stderr);
+  }
+
+  if (stderr && ideStarted && stderr.includes("✔ preview")) {
+    return qrcodePath;
   }
 
   if (stderr && ideStarted && stderr.includes("✖ preparing")) {
