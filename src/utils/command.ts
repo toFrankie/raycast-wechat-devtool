@@ -8,14 +8,6 @@ import { RepositoryType } from "../types";
 
 const execAsync = promisify(exec);
 
-function getEnvPathWithBrew() {
-  return [process.env.PATH, "/usr/bin", "/usr/local/bin", "/opt/homebrew/bin"].join(":");
-}
-
-function getExecEnv() {
-  return { ...process.env, PATH: getEnvPathWithBrew() };
-}
-
 export async function openProject(cliPath: string, projectPath: string) {
   const command = `${cliPath} open --project ${projectPath}`;
 
@@ -72,7 +64,7 @@ export async function previewProject(cliPath: string, projectPath: string, proje
 }
 
 export async function detectRepositoryType(cwd: string): Promise<RepositoryType> {
-  const env = getExecEnv();
+  const env = getEnv();
 
   try {
     await execAsync(COMMAND.GIT_CHECK, { cwd, env });
@@ -94,10 +86,18 @@ export async function detectRepositoryType(cwd: string): Promise<RepositoryType>
 export async function getRepositoryBranch(cwd: string, repositoryType: RepositoryType) {
   if (repositoryType === REPOSITORY_TYPE.UNKNOWN) return null;
 
-  const env = getExecEnv();
+  const env = getEnv();
   const command = repositoryType === REPOSITORY_TYPE.MERCURIAL ? COMMAND.HG_BRANCH : COMMAND.GIT_BRANCH;
   const { stdout, stderr } = await execAsync(command, { cwd, env });
 
   if (stderr) return null;
   return stdout.trim();
+}
+
+function getEnv() {
+  return { ...process.env, PATH: joinHomebrewPath() };
+}
+
+function joinHomebrewPath() {
+  return [process.env.PATH, "/opt/homebrew/bin", "/opt/homebrew/sbin"].filter(Boolean).join(":");
 }
